@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Mascotas en adopción{% endblock %}</title>
+  <style>
+    :root { --bg:#faf7f2; --card:#fff; --ink:#2b2b2b; --muted:#6b6b6b; --accent:#d9792b; --line:#e7e0d5; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+    header { background:var(--card); border-bottom:1px solid var(--line); }
+    nav { max-width:960px; margin:auto; padding:.8rem 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; }
+    nav .brand { font-weight:700; color:var(--accent); text-decoration:none; font-size:1.2rem; margin-right:auto; }
+    nav a { color:var(--ink); text-decoration:none; }
+    nav form { display:inline; margin:0; }
+    main { max-width:960px; margin:1.5rem auto; padding:0 1rem; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem; }
+    .card h3 { margin:.2rem 0; }
+    .muted { color:var(--muted); font-size:.9rem; }
+    .badge { display:inline-block; padding:.1rem .6rem; border-radius:999px; font-size:.8rem; background:#eee; }
+    .badge.D { background:#d8f0dc; } .badge.R { background:#fdeec4; } .badge.A { background:#e3e3e3; }
+    .btn, button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:.5rem 1rem; cursor:pointer; text-decoration:none; font-size:1rem; display:inline-block; }
+    .btn.sec, button.sec { background:#8a8a8a; } .btn.danger, button.danger { background:#b3382c; }
+    .btn.link, button.link { background:none; color:var(--ink); padding:0; }
+    form p { margin:.8rem 0; } label { display:block; font-weight:600; margin-bottom:.2rem; }
+    input, select, textarea { width:100%; padding:.5rem; border:1px solid var(--line); border-radius:8px; font:inherit; }
+    .errorlist { color:#b3382c; list-style:none; padding:0; margin:.2rem 0; }
+    .msg { padding:.6rem 1rem; border-radius:8px; background:#d8f0dc; margin-bottom:1rem; }
+    .pager { margin:1.5rem 0; display:flex; gap:1rem; justify-content:center; }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <a class="brand" href="{% url 'mascota-list' %}">🐾 Mascotas en adopción</a>
+    <a href="{% url 'mascota-list' %}">Inicio</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'mascota-create' %}">Publicar mascota</a>
+      <span class="muted">Hola, {{ user.username }}</span>
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link" type="submit">Cerrar sesión</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Iniciar sesión</a>
+      <a href="{% url 'registro' %}">Registrarse</a>
+    {% endif %}
+  </nav>
+</header>
+<main>
+  {% for m in messages %}<div class="msg">{{ m }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

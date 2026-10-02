@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Borrar mascota</h1>
+<form method="post" class="card">
+  {% csrf_token %}
+  <p>¿Seguro que quieres borrar a <strong>{{ object.nombre }}</strong>?</p>
+  <button class="danger" type="submit">Sí, borrar</button>
+  <a class="btn sec" href="{% url 'mascota-detail' object.pk %}">Cancelar</a>
+</form>
+{% endblock %}

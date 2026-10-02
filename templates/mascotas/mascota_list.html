@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Mascotas en adopción</h1>
+{% if object_list %}
+<div class="grid">
+  {% for m in object_list %}
+  <div class="card">
+    <span class="badge {{ m.estado }}">{{ m.get_estado_display }}</span>
+    <h3><a href="{% url 'mascota-detail' m.pk %}">{{ m.nombre }}</a></h3>
+    <p class="muted">{{ m.get_especie_display }} · {{ m.edad_meses }} meses</p>
+    <p>{{ m.descripcion|truncatechars:90 }}</p>
+    <p class="muted">Publicado por {{ m.autor.username }}</p>
+  </div>
+  {% endfor %}
+</div>
+<div class="pager">
+  {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">← Anterior</a>{% endif %}
+  <span class="muted">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente →</a>{% endif %}
+</div>
+{% else %}
+<p>Aún no hay mascotas publicadas.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ object.nombre }}{% endblock %}
+{% block content %}
+<div class="card">
+  <span class="badge {{ object.estado }}">{{ object.get_estado_display }}</span>
+  <h1>{{ object.nombre }}</h1>
+  <p class="muted">{{ object.get_especie_display }} · {{ object.edad_meses }} meses</p>
+  <p>{{ object.descripcion|linebreaks }}</p>
+  <p class="muted">Publicado por {{ object.autor.username }} el {{ object.creado|date:"d/m/Y H:i" }}</p>
+  {% if object.autor == request.user %}
+    <a class="btn" href="{% url 'mascota-update' object.pk %}">Editar</a>
+    <a class="btn danger" href="{% url 'mascota-delete' object.pk %}">Borrar</a>
+  {% endif %}
+  <a class="btn sec" href="{% url 'mascota-list' %}">Volver</a>
+</div>
+{% endblock %}
